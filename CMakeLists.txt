@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.16)
 project(bexperem LANGUAGES CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-set(INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
@@ -14,6 +13,12 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(${PROJECT_NAME}
 				src/main.cpp
+				src/screen/Screen.hpp
+				src/screen/Screen.cpp
+				src/events/Events.hpp
+				src/events/Events.cpp
+				src/game/Game.hpp
+				src/game/Game.hpp
 				)
 				
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics)
