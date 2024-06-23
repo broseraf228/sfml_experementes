@@ -31,7 +31,6 @@ void Events::poolEvents()
                 keyboard_buttons[event.key.scancode]++;
             else
                 keyboard_buttons[event.key.scancode] = 1;
-            std::cout << event.key.scancode << " = " << keyboard_buttons[event.key.scancode] << std::endl;
             break;
 
         case sf::Event::KeyReleased: // keyboard released
@@ -52,7 +51,6 @@ void Events::poolEvents()
     for (auto& item : mouse_buttons)
         if (item.second) {
             item.second++;
-            std::cout << item.first << " = " << item.second << std::endl;
         }
 }
 

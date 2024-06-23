@@ -1,6 +1,7 @@
 
 #include "Screen.hpp"
 
+#include "../game/Game.hpp"
 #include <iostream>
 
 Screen* Screen::self = nullptr;
@@ -22,6 +23,11 @@ Screen* Screen::getInstance() {
 	return self;
 }
 
+
+sf::RenderWindow& Screen::get_window() {
+	return window;
+}
+
 Screen::~Screen() {
 	window.close();
 }
@@ -35,7 +41,10 @@ Screen::Screen(int size_x, int size_y) {
 	window.create(sf::VideoMode(size_x, size_y), "SFML works!");
 }
 
-sf::RenderWindow& Screen::get_window() {
-	return window;
+void Screen::clear() {
+	window.clear();
 }
 
+void Screen::display() {
+	window.display();
+}

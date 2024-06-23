@@ -3,6 +3,10 @@
 
 #include "SFML/Graphics.hpp"
 
+
+struct gameDrawableData;
+
+
 class Screen
 {
 private:
@@ -18,6 +22,10 @@ public:
 
 	static Screen* getInstance();
 	static void close();
+
+	void clear();
+
+	void display();
 
 	sf::RenderWindow& get_window();
 };

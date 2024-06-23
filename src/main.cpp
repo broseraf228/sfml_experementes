@@ -1,42 +1,50 @@
 
 #include "SFML/Graphics.hpp"
 
+#include "resource_manager/ResourceManager.hpp"
 #include "screen/Screen.hpp"
 #include "events/Events.hpp"
+#include "game/Game.hpp"
 
 #include <iostream>
 
+
+double DELTA;
+
 void close_all(){
     Screen::close();
+    Game::close();
 }
 
-int main()
+int main(int argc, char* argv[])
 {
-    Screen::Initialisation(200, 200);
+    std::string path = argv[0];
+    while (path[path.size() - 1] != '\\')
+        path.erase(path.size() - 1);
+    ResourceManager::Initialisation(path);
+
+
+    Screen::Initialisation(1280, 720);
+    Game::Initialisation();
 
     Screen* screen = Screen::getInstance();
+    Game* game = Game::getInstance();
 
-    sf::RenderWindow& window = screen->get_window();
-
-
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-
+    sf::Clock clock;
+    sf::Time time;
     while (Events::windowIsOpen())
     {
         Events::poolEvents();
 
-        if (Events::justClicked(sf::Mouse::Button::Left))
-            if(shape.getFillColor() == sf::Color::Green)
-                shape.setFillColor(sf::Color::Red);
-            else
-                shape.setFillColor(sf::Color::Green);
+        game->update();
 
-        window.clear();
-        window.draw(shape);
-        window.display();
+        screen->clear();
+        game->draw();
+        screen->display();
+
+        time = clock.restart();
+        DELTA = time.asSeconds();
     }
-
 
     close_all();
 
