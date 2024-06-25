@@ -13,16 +13,23 @@ FetchContent_MakeAvailable(SFML)
 
 add_executable(${PROJECT_NAME}
 				src/main.cpp
+				src/constants.hpp
+				src/constants.cpp
 				src/screen/Screen.hpp
 				src/screen/Screen.cpp
+				src/screen/tile_atlas.hpp
+				src/screen/tile_atlas.cpp
 				src/events/Events.hpp
 				src/events/Events.cpp
 				src/game/Game.hpp
 				src/game/Game.cpp
+				src/game/World.hpp
+				src/game/World.cpp
 				src/resource_manager/ResourceManager.hpp
 				src/resource_manager/ResourceManager.cpp
 				src/other/math.hpp
 				src/other/math.cpp
+
 				)
 				
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics)
