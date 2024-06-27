@@ -6,6 +6,7 @@
 
 class World;
 class Tile_atlas;
+class Animation;
 enum class BLOCKS;
 
 class Game {
@@ -15,10 +16,13 @@ private:
 	Game();
 	~Game();
 
+	//animations
+	std::vector<Animation*> animations;
+
 	//game content
 	World* world;
 
-	int current_state{ 0 };
+	Animation* player_animation;
 	sf::Sprite player_sprite;
 
 	Tile_atlas* atlas;
@@ -31,8 +35,10 @@ public:
 	static void close();
 
 	void update();
-
 	void draw();
+
+	void subscribe_animation(Animation*);
+	void describe_animation(Animation*);
 };
 
 #endif

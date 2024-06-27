@@ -19,10 +19,6 @@ int ResourceManager::Initialisation(const std::string& path_to_exe) {
 		return 1;
 	}
 
-	load_image("textures\\textures.png", "player_textures");
-	load_texture(get_image("player_textures"), sf::IntRect(0, 0, 16, 16), "playerState_1");
-	load_texture(get_image("player_textures"), sf::IntRect(16, 0, 16, 16), "playerState_2");
-
 	return 0;
 }
 

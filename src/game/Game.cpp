@@ -36,16 +36,24 @@ Game* Game::getInstance() {
 Game::~Game() {}
 Game::Game() {
 
-	ResourceManager::load_image("textures\\blocks\\level_1.png", "i_level_1");
-	ResourceManager::load_texture(ResourceManager::get_image("i_level_1"), sf::IntRect(0,0,128,128), "ta_level_1");
+	ResourceManager::load_image("img\\blocks\\level_1.png", "i_level_1");
+	ResourceManager::load_texture(ResourceManager::get_image("i_level_1"), sf::IntRect(0,0,128,128), "te_level_1");
+
+	ResourceManager::load_image("img\\animations\\player_animations.png", "i_player_animations");
+	ResourceManager::load_texture(ResourceManager::get_image("i_player_animations"), sf::IntRect(0,0,128,128), "te_player_animations");
 
 	world = new World();
-	atlas = new Tile_atlas(ResourceManager::get_texture("ta_level_1"), 16,
+	int ds = 24;
+	atlas = new Tile_atlas(ResourceManager::get_texture("te_level_1"), ds,
 		{ 
-			{int(bsc::BLOCKS::Air) , Tile_atlas_fragment(0,0,1,1)},
-			{int(bsc::BLOCKS::Rock) , Tile_atlas_fragment(1,0,2,1)},
+			{"air" , sf::IntRect(		0,		ds,		ds,-ds)},
+			{"rock" , sf::IntRect(		ds*1,	ds,		ds,-ds)},
+			{"stone" , sf::IntRect(		ds*2,	ds,		ds,-ds)},
 		}
 	);
+
+	player_animation = new Animation(ResourceManager::get_texture("te_player_animations"),16,16,2);
+	subscribe_animation(player_animation);
 	
 	player_sprite.setTextureRect(sf::IntRect(0,0,16,16));
 	player_sprite.setOrigin(8, 8);
@@ -54,21 +62,20 @@ Game::Game() {
 
 void Game::update()
 {
-	if (Events::justClicked(sf::Mouse::Button::Left))
-		if (current_state == 1)
-			current_state = 0;
-		else
-			current_state = 1;
+	//update_animations
+	for (auto item : animations)
+		item->update_time(DELTA);
 
 	if (Events::isPressed(sf::Keyboard::W))
 		player_sprite.move(0,-100 * DELTA);
 	if (Events::isPressed(sf::Keyboard::S))
 		player_sprite.move(0, 100 * DELTA);
+	if (Events::isPressed(sf::Keyboard::D))
+		player_sprite.move(100 * DELTA, 0);
+	if (Events::isPressed(sf::Keyboard::A))
+		player_sprite.move(-100 * DELTA, 0);
 
-	if (current_state == 0)
-		player_sprite.setTexture(*ResourceManager::get_texture("playerState_1"));
-	if (current_state == 1)
-		player_sprite.setTexture(*ResourceManager::get_texture("playerState_2"));
+	player_animation->update_sprite(player_sprite);
 }
 
 void Game::draw()
@@ -76,10 +83,18 @@ void Game::draw()
 	Screen* screen = Screen::getInstance();
 
 	if (world->was_updated) {
-		world->was_updated = false;
+		//world->was_updated = false;
 		screen->update_displaying_map(atlas, world->get_level_map_textures());
 	}
 
 	screen->draw_level();
 	screen->get_window().draw(player_sprite);
+}
+
+
+void Game::subscribe_animation(Animation* animation){
+	animations.push_back(animation);
+}
+void Game::describe_animation(Animation* animation) {
+	animations.erase(std::remove(animations.begin(), animations.end(), animation), animations.end());
 }

@@ -9,7 +9,8 @@
 #include <iostream>
 
 
-double DELTA;
+double DELTA = 0.1;
+float gTime = 0;
 
 void close_all(){
     Screen::close();
@@ -24,7 +25,7 @@ int main(int argc, char* argv[])
     ResourceManager::Initialisation(path);
 
 
-    Screen::Initialisation(1280, 720);
+    Screen::Initialisation(1600, 1200);
     Game::Initialisation();
 
     Screen* screen = Screen::getInstance();
@@ -44,6 +45,7 @@ int main(int argc, char* argv[])
 
         time = clock.restart();
         DELTA = time.asSeconds();
+        gTime += DELTA;
     }
 
     close_all();

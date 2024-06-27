@@ -23,7 +23,7 @@ private:
 	//level map vertex array
 	sf::VertexArray displaying_map;
 	//add block to displaying map
-	void set_block_vertextes(int px, int py, int name);
+	void set_block_vertextes(int px, int py, const std::string& name);
 	
 public:
 	Screen(const Screen&) = delete;
@@ -38,7 +38,7 @@ public:
 	void draw_fps(float fps);
 	void display();
 	//generate displaying_map and other variales from level
-	void update_displaying_map(const Tile_atlas* tile_atlas, std::vector<std::vector<int>> map);
+	void update_displaying_map(const Tile_atlas* tile_atlas, const std::vector<std::vector<std::string>>& map);
 
 	sf::RenderWindow& get_window();
 };
