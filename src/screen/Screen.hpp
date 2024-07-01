@@ -5,6 +5,7 @@
 
 
 class Tile_atlas;
+class Room;
 
 class Screen
 {
@@ -17,13 +18,19 @@ private:
 
 	//current level map size
 	int level_sx, level_sy;
-	//current tile atlas 
-	const Tile_atlas* level_tile_atlas;
+	//current block tile atlas 
+	const Tile_atlas* block_tile_atlas;
+	//current room tile atlas 
+	const Tile_atlas* room_tile_atlas;
 
 	//level map vertex array
-	sf::VertexArray displaying_map;
+	sf::VertexArray displaying_blocks;
+	//floor and barriers vertex array
+	sf::VertexArray displaying_room_decorations;
 	//add block to displaying map
-	void set_block_vertextes(int px, int py, const std::string& name);
+	void set_block_vertextes(int px, int py, const std::string& name, const Tile_atlas* atlas, sf::VertexArray& vertarray);
+	//camera position
+	int camera_position_x{ 0 }, camera_position_y{ 0 };
 	
 public:
 	Screen(const Screen&) = delete;
@@ -34,12 +41,16 @@ public:
 	static void close();
 
 	void clear();
-	void draw_level();
+	void draw_room();
 	void draw_fps(float fps);
 	void display();
-	//generate displaying_map and other variales from level
-	void update_displaying_map(const Tile_atlas* tile_atlas, const std::vector<std::vector<std::string>>& map);
 
+	//generate displaying_map and other variales from level
+	void update_displaying(const Room* room);
+
+	void set_block_tile_atlas(const Tile_atlas*);
+	void set_room_tile_atlas(const Tile_atlas*);
+	void set_camera_position(int px, int py);
 	sf::RenderWindow& get_window();
 };
 

@@ -7,7 +7,7 @@
 #include "../screen/tile_atlas.hpp"
 #include "../events/Events.hpp"
 #include "../resource_manager/ResourceManager.hpp"
-#include "World.hpp"
+#include "world/World.hpp"
 #include <iostream>
 
 extern double DELTA;
@@ -35,27 +35,16 @@ Game* Game::getInstance() {
 
 Game::~Game() {}
 Game::Game() {
-
-	ResourceManager::load_image("img\\blocks\\level_1.png", "i_level_1");
-	ResourceManager::load_texture(ResourceManager::get_image("i_level_1"), sf::IntRect(0,0,128,128), "te_level_1");
-
-	ResourceManager::load_image("img\\animations\\player_animations.png", "i_player_animations");
-	ResourceManager::load_texture(ResourceManager::get_image("i_player_animations"), sf::IntRect(0,0,128,128), "te_player_animations");
+	//
+	Screen::getInstance()->set_block_tile_atlas(ResourceManager::asset->get_tile_atlas("blocks_default"));
+	//
+	Screen::getInstance()->set_room_tile_atlas(ResourceManager::asset->get_tile_atlas("room_decorations_default"));
 
 	world = new World();
-	int ds = 24;
-	atlas = new Tile_atlas(ResourceManager::get_texture("te_level_1"), ds,
-		{ 
-			{"air" , sf::IntRect(		0,		ds,		ds,-ds)},
-			{"rock" , sf::IntRect(		ds*1,	ds,		ds,-ds)},
-			{"stone" , sf::IntRect(		ds*2,	ds,		ds,-ds)},
-		}
-	);
-
-	player_animation = new Animation(ResourceManager::get_texture("te_player_animations"),16,16,2);
+	
+	player_animation = new Animation(ResourceManager::asset->get_animation("player_animation"));
 	subscribe_animation(player_animation);
 	
-	player_sprite.setTextureRect(sf::IntRect(0,0,16,16));
 	player_sprite.setOrigin(8, 8);
 	player_sprite.setScale(10, 10);
 }
@@ -83,11 +72,11 @@ void Game::draw()
 	Screen* screen = Screen::getInstance();
 
 	if (world->was_updated) {
-		//world->was_updated = false;
-		screen->update_displaying_map(atlas, world->get_level_map_textures());
+		world->was_updated = false;
+		screen->update_displaying(world->get_room());
 	}
 
-	screen->draw_level();
+	screen->draw_room();
 	screen->get_window().draw(player_sprite);
 }
 

@@ -5,7 +5,11 @@
 #include <map>
 #include <fstream>
 
+#include "../constants.hpp"
+
 #include "SFML/Graphics.hpp"
+
+class AssetManager;
 
 class ResourceManager {
 private:
@@ -30,7 +34,31 @@ public:
 	static const sf::Texture* load_texture(const sf::Image*, const sf::IntRect&, const std::string& name);
 	static const sf::Texture* get_texture(const std::string& name);
 
-	
+	static AssetManager* asset;
+};
+
+class room_map;
+class Tile_atlas;
+class Animation;
+
+struct room_template {
+	room_template(const room_map& map, const Tile_atlas* blocks, const Tile_atlas* decorations);
+	room_map* rm;
+	const Tile_atlas* blocks;
+	const Tile_atlas* decorations;
+};
+
+class AssetManager {
+private:
+	std::map<bsc::ROOMS, std::vector<room_template>> room_template_s;
+	std::map<std::string, Tile_atlas*> tile_atlas_s;
+	std::map<std::string, Animation*> animation_s;
+public:
+	AssetManager();
+
+	const room_template* get_room_template(bsc::ROOMS);
+	const Tile_atlas* get_tile_atlas(const std::string&);
+	const Animation* get_animation(const std::string&);
 };
 
 #endif

@@ -2,26 +2,43 @@
 
 #include "../game/Game.hpp"
 
+texRect::texRect(int left, int top, int w, int h, int dx, int dy) {
+	width = w;
+	height = h;
+	this->px = left;
+	this->py = top;
+	this->dx = dx;
+	this->dy = dy;
+}
+texRect::texRect() {
+	width = 0;
+	height = 0;
+	this->px = 0;
+	this->py = 0;
+	this->dx = 0;
+	this->dy = 0;
+}
+
 //TILE ATLAS
 
 Tile_atlas::Tile_atlas(
 	const sf::Texture* texture, 
 	int tile_size, 
-	const std::map<std::string, sf::IntRect>& fragments
+	const std::map<std::string, texRect>& fragments
 ) : atlas{ texture }, tile_size{ tile_size }, fragments{fragments} {
-	this->fragments[""] = sf::IntRect(0, 0, 0, 0);
+	this->fragments[""] = texRect();
 }
 Tile_atlas::Tile_atlas(
 )
 {
-	this->fragments[""] = sf::IntRect(0, 0, 0, 0);
+	this->fragments[""] = texRect();
 }
 
 
-const sf::IntRect& Tile_atlas::get_tile_fragment(const std::string& name) const {
+const texRect& Tile_atlas::get_tile_fragment(const std::string& name) const {
 	if (fragments.find(name) == fragments.end())
 		return fragments.at("");
-	fragments.at(name);
+	return fragments.at(name);
 }
 const sf::Texture* Tile_atlas::get_texture() const {
 	return atlas;
@@ -46,6 +63,15 @@ Animation::Animation(
 ) : texture_ptr{ texture }, sx{ tile_size_x }, sy {tile_size_y}, count{ count }, frame_time{frame_time}, dx{ dx }, dy{ dy }
 {
 	
+}
+Animation::Animation(const Animation* anim) {
+	texture_ptr = anim->texture_ptr;
+	sx = anim->sx;
+	sy = anim->sy;
+	count = anim->count;
+	frame_time = anim->frame_time;
+	dx = anim->dx;
+	dy = anim->dy;
 }
 void Animation::subscribe_animation(){
 	Game::getInstance()->subscribe_animation(this);

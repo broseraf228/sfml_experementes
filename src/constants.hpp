@@ -2,9 +2,12 @@
 
 namespace bsc {
 	enum class BLOCKS {
-		Air = 1,
-		Rock = 2,
-		Stone = 3
+		Air = 0,
+		Rock = 1,
+		Stone = 2
+	};
+	enum class ROOMS {
+		Default = 1,
 	};
 	enum class DIRECTIONS {
 		NOTH = 0,

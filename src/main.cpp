@@ -19,11 +19,11 @@ void close_all(){
 
 int main(int argc, char* argv[])
 {
+    srand(time(NULL));
     std::string path = argv[0];
     while (path[path.size() - 1] != '\\')
         path.erase(path.size() - 1);
     ResourceManager::Initialisation(path);
-
 
     Screen::Initialisation(1600, 1200);
     Game::Initialisation();

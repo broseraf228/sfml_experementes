@@ -23,8 +23,12 @@ add_executable(${PROJECT_NAME}
 				src/events/Events.cpp
 				src/game/Game.hpp
 				src/game/Game.cpp
-				src/game/World.hpp
-				src/game/World.cpp
+				src/game/world/World.hpp
+				src/game/world/World.cpp
+				src/game/world/Room.hpp
+				src/game/world/Room.cpp
+				src/game/world/Block.hpp
+				src/game/world/Block.cpp
 				src/resource_manager/ResourceManager.hpp
 				src/resource_manager/ResourceManager.cpp
 				src/other/math.hpp
